@@ -1,0 +1,36 @@
+### Yapýlacaklar 
+- [X] Data katmanýna ilgili classlarýn oluþturulmasý
+	- Kitap
+        - Id Guid (contructor'da otomaik deðer atansýn.)
+        - Ad string
+        - BasimTarihi DateTimee
+        - KitapTurEnum KitapTuru
+        - YazarAd string
+        - SayfaSayisi int
+        - Aciklama string
+    - KitapTurEnum
+        - Egitim,Psikoloji,Korku,Biyografi,....
+    - Kullanýcý
+        - Id Guid (contructor'da otomaik deðer atansýn.)
+        - AdSoyad string
+        - KullaniciAdi string
+        - Parola string
+        - List< Kitap > OduncAlinanKitaplar
+    - KullanýcýYontecisi
+        - Kullanýcý listesi olmalý ve tüm iþlemler bu liste üzerinden yapýlmalý.
+        - KayýtOl methodu
+        - GirisYap methodu
+        - KullaniciVarMi methodu
+    - KutuphaneYoneticisi
+        - Kitap listesi olmalý ve tüm iþlemler bu liste üzerinden yapýlmalý.
+        - KitapBagisYap methodu
+        - KitapImhaEt methodu
+        - KitapOduncAl methodu parametre kullanýcý ve kitap
+- [ ] Register ve Login sayfalarýnýn tasarlanmasý
+    - Görsel tasarýmýn yapýlmasý.
+    - Register sayfasýnda parola eþleþme kontrolü
+    - Ayný kullanýcý adýna sahip kiþi var mý kontrolü
+    - Register ve login iþlemleri methodlar kullanýlarak
+- [ ] Sýnýflarýn tasarlanmasý
+- [ ] Sýnýflarýn tasarlanmasý
+- [ ] Sýnýflarýn tasarlanmasý
