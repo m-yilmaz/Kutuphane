@@ -20,6 +20,7 @@ namespace Kutuphane.DATA
         public int SayfaSayisi { get; set; }
         public string Aciklama { get; set; }
         public DateTime? OduncAlinmaTarihi { get; set; }
+        public DateTime? TeslimTarihi { get; set; }
 
     }
 }

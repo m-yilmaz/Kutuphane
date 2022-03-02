@@ -14,22 +14,33 @@ namespace Kutuphane.DATA
         }
 
         public List<Kitap> Kitaplar { get; set; }
-        public void KitapBagisYap(Kitap kitap, int adet=1)
+        public void KitapBagisYap(Kitap kitap, int adet = 1)
         {
             for (int i = 0; i < adet; i++)
             {
                 Kitaplar.Add(kitap);
             }
         }
-        public void KitapImhaEt()
+        public void KitapImhaEt(Kitap kitap)
         {
-
+            Kitap imhaEdilecekKitap = Kitaplar.FirstOrDefault(x => x.Id == kitap.Id);
+            Kitaplar.Remove(imhaEdilecekKitap);
         }
-        public void KitapOduncAl()
+        public void KitapOduncAl(Kitap kitap, Kullanici kullanici)
         {
-
+            Kitap k1 = Kitaplar.FirstOrDefault(x => x.Id == kitap.Id);
+            k1.OduncAlinmaTarihi = DateTime.Now;
+            k1.TeslimTarihi = k1.OduncAlinmaTarihi.Value.AddSeconds(15);
+            kullanici.OduncAlinanKitaplar.Add(k1);
         }
-
+        public void KitapTeslimEt(Kitap kitap, Kullanici kullanici)
+        {
+            //kullanıcının odunc alınan kitaplarından silinir, odunc alinma tarihi null yapılır.
+            Kitap k1 = Kitaplar.FirstOrDefault(x => x.Id == kitap.Id);
+            k1.OduncAlinmaTarihi = null;
+            k1.TeslimTarihi = null;
+            kullanici.OduncAlinanKitaplar.Remove(k1);
+        }
 
 
 

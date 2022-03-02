@@ -106,8 +106,6 @@
     <EmbeddedResource Include="RegisterForm.resx">
       <DependentUpon>RegisterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="bin\Debug\kitaplar.json" />
-    <None Include="bin\Debug\kullanicilar.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -130,6 +128,9 @@
       <Project>{fea4f2d3-f6c1-4e27-8d8a-ac5c095f7bb6}</Project>
       <Name>Kutuphane.DATA</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

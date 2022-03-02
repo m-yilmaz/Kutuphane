@@ -13,50 +13,54 @@ namespace Kutuphane.UI
 {
     public partial class HesabimForm : Form
     {
-        private Kullanici _kullanici;
-        BindingList<Kitap> blKitaplar;
-        private KutuphaneYoneticisi _db;
-        public HesabimForm(Kullanici kullanici,KutuphaneYoneticisi db)
+        private readonly Kullanici _aktifKullanici;
+        private readonly KutuphaneYoneticisi _kutuphaneDb;
+        public HesabimForm(Kullanici aktifKullanici, KutuphaneYoneticisi kutuphaneDb)
         {
-            
             InitializeComponent();
-            _kullanici = kullanici;
-            _db = db;
+            _aktifKullanici = aktifKullanici;
+            _kutuphaneDb = kutuphaneDb;
             KullaniciBilgileriniYukle();
-            blKitaplar = new BindingList<Kitap>(_kullanici.OduncAlinanKitaplar);
-            dgvOduncAlinanKitap.DataSource = blKitaplar;
+            Yenile();
         }
 
         private void KullaniciBilgileriniYukle()
         {
-            lblId.Text = _kullanici.Id.ToString();
-            lblAdSoyad.Text = _kullanici.AdSoyad;
-            lblKullaniciAdi.Text = _kullanici.KullaniciAdi;
-            lblParola.Text = _kullanici.Parola;
+            lblId.Text = _aktifKullanici.Id.ToString();
+            lblAdSoyad.Text = _aktifKullanici.AdSoyad;
+            lblKullaniciAdi.Text = _aktifKullanici.KullaniciAdi;
+            lblParola.Text = _aktifKullanici.Parola;
         }
-
         private void Yenile()
         {
             dgvOduncAlinanKitap.DataSource = null;
-            dgvOduncAlinanKitap.DataSource = blKitaplar;
+            dgvOduncAlinanKitap.DataSource = _aktifKullanici.OduncAlinanKitaplar != null ? _aktifKullanici.OduncAlinanKitaplar : null;
+            dgvOduncAlinanKitap.Columns[0].Visible = true;
+            dgvOduncAlinanKitap.Columns[1].HeaderText = "Kitap Adı";
+            dgvOduncAlinanKitap.Columns[2].Visible = false;
+            dgvOduncAlinanKitap.Columns[3].HeaderText = "Kitap Türü";
+            dgvOduncAlinanKitap.Columns[4].Visible = false;
+            dgvOduncAlinanKitap.Columns[5].Visible = false;
+            dgvOduncAlinanKitap.Columns[6].Visible = false;
+            dgvOduncAlinanKitap.Columns[7].HeaderText = "Ödünç Alınma Tarihi";
+            dgvOduncAlinanKitap.Columns[8].HeaderText = "Son Teslim Tarihi";
         }
         private void btnKitapTeslimEt_Click(object sender, EventArgs e)
         {
-            Kitap teslimEdilenKitap =  (Kitap)dgvOduncAlinanKitap.SelectedRows[0].DataBoundItem;
-            _kullanici.OduncAlinanKitaplar.Remove(teslimEdilenKitap);
-            _db.Kitaplar.Add(teslimEdilenKitap);
+            Kitap teslimEdilenKitap = (Kitap)(dgvOduncAlinanKitap.SelectedRows[0].DataBoundItem);
+            if (dtpSonTeslimTarihi.Value <= teslimEdilenKitap.TeslimTarihi.Value)
+                _kutuphaneDb.KitapTeslimEt(teslimEdilenKitap, _aktifKullanici);
+            else
+            {
+                MessageBox.Show("Kitabın son teslim tarihinden sonra teslim edildi ! Lütfen ceza almamak için son teslim tarihine uyunuz !");
+                _kutuphaneDb.KitapTeslimEt(teslimEdilenKitap, _aktifKullanici);
+            }
+            Yenile();
         }
 
-        private void dgvOduncAlinanKitap_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void btnGuncelle_Click(object sender, EventArgs e)
         {
-            Kitap teslimEdilenKitap = (Kitap)dgvOduncAlinanKitap.SelectedRows[0].DataBoundItem;
-            DateTime oat =teslimEdilenKitap.OduncAlinmaTarihi.Value;
-            DateTime onBesGunEkli = oat.AddSeconds(15);
-            dtpSonTeslimTarihi.Value = onBesGunEkli;
-            if (DateTime.Now > onBesGunEkli)
-            {
-                MessageBox.Show("Kitabın Teslim Süresi Gecikti!");
-            }
+            //TODO Şifre değişikliği
         }
     }
 }

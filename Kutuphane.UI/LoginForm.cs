@@ -15,24 +15,11 @@ namespace Kutuphane.UI
 {
     public partial class LoginForm : Form
     {
-        KullaniciYoneticisi data = new KullaniciYoneticisi();
+        KullaniciYoneticisi data;
         public LoginForm()
         {
             InitializeComponent();
             VerileriOku();
-        }
-
-        private void VerileriOku()
-        {
-            try
-            {
-                string json = File.ReadAllText("kullanicilar.json");
-                data.Kullanicilar = JsonConvert.DeserializeObject<List<Kullanici>>(json);
-            }
-            catch (Exception)
-            {
-                data.Kullanicilar = new List<Kullanici>();
-            }
         }
 
         private void btnYeniKayit_Click(object sender, EventArgs e)
@@ -40,7 +27,6 @@ namespace Kutuphane.UI
             RegisterForm rf = new RegisterForm(data);
             rf.ShowDialog();
         }
-
         private void btnGirisYap_Click(object sender, EventArgs e)
         {
             
@@ -56,11 +42,28 @@ namespace Kutuphane.UI
                 MessageBox.Show("Giriş Bilgilerinizi Kontrol ediniz");
             }
         }
+        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            VerileriYaz();
+        }
 
         private void VerileriYaz()
         {
-            string json = JsonConvert.SerializeObject(data.Kullanicilar);
+            string json = JsonConvert.SerializeObject(data);
             File.WriteAllText("kullanicilar.json", json);
+        }
+
+        private void VerileriOku()
+        {
+            try
+            {
+                string json = File.ReadAllText("kullanicilar.json");
+                data = JsonConvert.DeserializeObject<KullaniciYoneticisi>(json);
+            }
+            catch (Exception)
+            {
+                data = new KullaniciYoneticisi();
+            }
         }
     }
 }
